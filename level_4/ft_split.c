@@ -20,9 +20,7 @@ char    **ft_split(char *str);
 
 int	is_space(char c)
 {
-	if (c == ' ' || (c >= 9 && c <= 13))
-		return (1);
-	return (0);
+	return (c == ' ' || (c >= 9 && c <= 13));
 }
 
 int	countwords(char *s)
@@ -54,10 +52,10 @@ char	*word(char *s)
 	i = 0;
 	while (s[i] && !is_space(s[i]))
 		i++;
-	new_s = (char *)malloc((i + 1) * sizeof(char));
+	new_s = malloc((i + 1) * sizeof(char));
 	if (!new_s)
 		return (NULL);
-	i = 0;
+	i = 0; // reset cause we use it for copying the word
 	while (s[i] && !is_space(s[i]))
 	{
 		new_s[i] = s[i];
@@ -65,6 +63,19 @@ char	*word(char *s)
 	}
 	new_s[i] = '\0';
 	return (new_s);
+}
+
+void	free_split(char **split, int up_to)
+{
+	int	i;
+
+	i = 0;
+	while (i < up_to)
+	{
+		free(split[i]);
+		i++;
+	}
+	free(split);
 }
 
 char	**ft_split(char *str)
@@ -75,7 +86,7 @@ char	**ft_split(char *str)
 
 	if (!str)
 		return (NULL);
-	new_s = (char **)malloc((countwords(str) + 1) * sizeof(char *));
+	new_s = malloc((countwords(str) + 1) * sizeof(char *));
 	if (!new_s)
 		return (NULL);
 	i = 0;
@@ -88,7 +99,10 @@ char	**ft_split(char *str)
 		{
 			new_s[wordcount] = word(str + i);
 			if (!new_s[wordcount])
+			{
+				free_split(new_s, wordcount);
 				return (NULL);
+			}
 			wordcount++;
 			while (str[i] && !is_space(str[i]))
 				i++;
