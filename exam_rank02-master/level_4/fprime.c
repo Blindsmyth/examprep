@@ -51,7 +51,7 @@ int main(int ac, char **av) {
                 printf("%d", i);
                 if (n == i) break;
                 printf("*");
-                n /= i;
+                n = n / i;
                 i = 1;
             }
         }

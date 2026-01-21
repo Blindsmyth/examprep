@@ -18,8 +18,8 @@ char	*ft_itoa(int nbr);
 
 char *converter(char *s, int len, long int n) {
     while (n > 0) {
-        s[len] = '0' + (n%10);
-        n /= 10;
+        s[len] = '0' + (n % 10);
+        n = n / 10;
         len--;
     }
     return s;
