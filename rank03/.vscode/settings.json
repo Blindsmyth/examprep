@@ -1,0 +1,8 @@
+{
+    "norminette.enabled": false,
+    "norminette.linter.enabled": false,
+    "workbench.sideBar.location": "right",
+    "workbench.activityBar.orientation": "vertical",
+    "workbench.panel.defaultLocation": "bottom"
+}
+

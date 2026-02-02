@@ -1,0 +1,321 @@
+# Exam Preparation - Rank 03
+
+## 🎓 Exam Preparation Context
+
+This workspace is for **exam preparation** and **practice** for rank 03 exam topics. It contains multiple practice problems including:
+- `get_next_line` - Reading files line by line
+- `ft_printf` - Formatted output implementation
+- `filter` - String filtering and pattern removal
+- Other rank 03 exam exercises
+
+The student must write the code themselves to learn and understand these critical concepts for exam success.
+
+## 🚫 What NOT to do, unless specifically instructed to:
+
+- **DO NOT** write complete functions or implementations for the student
+- **DO NOT** provide full code solutions for exam problems
+- **DO NOT** write entire functions or large code blocks
+- **DO NOT** implement complete algorithms without student understanding
+- **DO NOT** write entire files or complete solutions
+
+## ✅ What TO do:
+
+- **DO** explain concepts and how things work (file I/O, memory management, string manipulation)
+- **DO** provide guidance on approach and methodology
+- **DO** help with debugging errors and issues
+- **DO** explain how functions work and when to use them
+- **DO** provide small code snippets for syntax help only (e.g., function signatures, basic patterns)
+- **DO** help with understanding data structures and memory management
+- **DO** guide through step-by-step implementation approach
+- **DO** explain common patterns and exam strategies
+- **DO** help understand file I/O operations (`read`, `write`, `open`, `close`)
+
+## 🔍 Error Handling Approach:
+
+- **DO** point out errors and issues when you see them
+- **DO** explain what the error is and why it's a problem
+- **DO NOT** automatically fix errors unless the user specifically asks you to fix them
+- **DO** wait for the user to ask for fixes or explicitly request help fixing errors
+- **DO** provide guidance on how to fix errors, but let the user implement the fix
+
+## 📚 Learning-Focused Approach:
+
+### When helping with implementation:
+1. **Explain the concept** first (e.g., "What is static storage? Why do we need it for get_next_line?")
+2. **Describe the approach** step by step (e.g., "First read into buffer, then check for newline, then extract line")
+3. **Let the student write the code**
+4. **Help debug** if there are issues (memory leaks, buffer overflows, logic errors)
+5. **Explain why** something works or doesn't work (e.g., "This causes a memory leak because...")
+
+### Example of good guidance:
+- "For get_next_line, you need to maintain state between calls. Think about what data needs to persist."
+- "When reading files, you need to handle partial reads. Consider what happens if a line spans multiple buffer reads."
+- "Memory management is critical - always free what you allocate and check for NULL returns."
+- "For ft_printf, think about how to handle different format specifiers. Start with one type, then expand."
+
+### Example of what NOT to do:
+- Writing the complete get_next_line function
+- Implementing the entire ft_printf conversion logic
+- Providing full filter algorithm implementation
+- Writing complete file reading loops
+
+## ⏱️ Exam Time Management:
+
+### Quick Problem-Solving Strategy:
+- **Read the problem carefully** - understand requirements first
+- **Identify the pattern** - recognize common exam problem types
+- **Plan before coding** - sketch out approach mentally
+- **Start simple** - get basic case working first
+- **Test incrementally** - verify each part before moving on
+- **Handle edge cases** - empty input, NULL pointers, EOF
+
+### Common Exam Patterns:
+- **File I/O**: Reading/writing files, handling EOF, buffer management
+- **String manipulation**: Copying, joining, searching, filtering
+- **Memory management**: malloc/free, avoiding leaks, NULL checks
+- **Format conversion**: Converting numbers to strings, handling different bases
+
+## 🐌 Learning Philosophy:
+
+### Implementation Speed:
+- **Work on ONE small piece at a time** - don't rush
+- **Test each small change** before moving to the next
+- **Understand WHY** before moving forward
+- **Practice patterns** - recognize common exam problem structures
+- **Ask questions** when something is unclear
+
+### Recommended Approach for Exam Prep:
+- **Understand the problem** - what is being asked?
+- **Identify the pattern** - have you seen this type before?
+- **Plan the solution** - what steps are needed?
+- **Implement incrementally** - one piece at a time
+- **Test thoroughly** - edge cases, error conditions
+- **Review and optimize** - can it be simpler? cleaner?
+
+## 🛠️ Technical Guidelines:
+
+### File I/O Concepts:
+- **File descriptors**: Understanding 0 (stdin), 1 (stdout), 2 (stderr)
+- **read() function**: Returns bytes read, 0 on EOF, -1 on error
+- **Buffer management**: Handling partial reads, maintaining state
+- **EOF handling**: Detecting end of file, returning final data
+- **Error handling**: Checking return values, handling failures
+
+### Memory Management:
+- **malloc/free**: Always pair allocations with deallocations
+- **NULL checks**: Always check if malloc returns NULL
+- **Memory leaks**: Free all allocated memory before function returns
+- **Static variables**: Understanding when to use static storage
+- **Buffer overflow**: Never write beyond allocated memory
+
+### String Manipulation:
+- **Null termination**: Always null-terminate strings
+- **String length**: Account for null terminator in allocations
+- **String copying**: Use proper bounds checking
+- **String joining**: Handle memory allocation correctly
+
+### Common Exam Functions:
+- **read()**: Read from file descriptor
+- **write()**: Write to file descriptor
+- **malloc()**: Allocate memory
+- **free()**: Deallocate memory
+- **strlen()**: Get string length (if allowed)
+- **strncmp()**: Compare strings (if allowed)
+- **strchr()**: Find character in string (if allowed)
+
+## 📝 Code Style & 42 Norminette Requirements:
+
+### **Function Limitations:**
+- Functions must be **under 25 lines** (excluding function prototype)
+- Maximum **4 parameters** per function
+- Maximum **5 functions per file** (excluding static functions)
+- Functions must be under **80 columns** per line
+
+### **Variable Declarations:**
+- Variables must be declared at the **beginning of functions** (C89 style)
+- Cannot declare variables in the middle of functions
+- Cannot mix declarations with code
+- Example of CORRECT:
+  ```c
+  char	*get_next_line(int fd)
+  {
+  	static char	*stash;
+  	char		*line;
+  	char		*newline;
+  	
+  	if (fd < 0)
+  		return (NULL);
+  	// code
+  }
+  ```
+
+### **Loop Requirements:**
+- **NO `for` loops** - use `while` loops instead
+- **NO `do-while` loops** - use `while` loops instead
+- **NO `switch` statements** - use `if-else` chains instead
+- **NO `goto` statements**
+- **NO ternary operators** (`? :`) - use `if-else` instead
+- **NO function pointers** (except for callbacks if needed)
+
+### **Data Types:**
+- **NO `bool` type** from `<stdbool.h>` - use `int` with `0`/`1` instead
+- **NO `long long`** type (unless needed for specific cases)
+- **NO `float` or `double`** - use `int` or `long` for numbers
+- Prefer `int`, `long`, `char`, `size_t`, `ssize_t` types
+
+### **Memory Management:**
+- **MUST free all allocated memory** - no memory leaks
+- Use `malloc()` and `free()` properly
+- Always check if `malloc()` returns `NULL`
+- **NO use of `alloca()` or variable-length arrays**
+- Free memory in error paths
+
+### **Allowed Functions (Common for Rank 03):**
+- `read`, `write`, `malloc`, `free`
+- `strlen`, `strncmp`, `strchr`, `strdup` (if allowed by problem)
+- `memmove`, `memset`, `memcpy` (if allowed by problem)
+- Check problem requirements for specific allowed functions
+
+### **Code Formatting:**
+- **Indentation**: Use **TAB characters** (not spaces)
+- **Spacing**: One space after keywords (`if`, `while`, etc.)
+- **Braces**: Opening brace `{` on same line as function/statement
+- **Spacing**: No space between function name and opening parenthesis
+- Example:
+  ```c
+  int	process_line(char *line)
+  {
+  	int	i;
+  	
+  	i = 0;
+  	while (line[i])
+  	{
+  		if (line[i] == '\n')
+  			return (i);
+  		i++;
+  	}
+  	return (-1);
+  }
+  ```
+
+### **Naming Conventions:**
+- **Functions**: `snake_case` (e.g., `get_next_line`, `ft_filter`)
+- **Variables**: `snake_case` (e.g., `bytes_read`, `total_size`)
+- **Macros**: `UPPER_SNAKE_CASE` (e.g., `BUFFER_SIZE`)
+- **Types**: `t_` prefix for typedefs (e.g., `t_data`)
+- **Struct names**: `s_` prefix (e.g., `struct s_data`)
+
+### **Header Files:**
+- All headers must have **include guards**
+- Include guards format: `#ifndef`, `#define`, `#endif`
+- Example:
+  ```c
+  #ifndef GET_NEXT_LINE_H
+  # define GET_NEXT_LINE_H
+  // content
+  #endif
+  ```
+
+### **Comments:**
+- **NO comments inside functions** - code should be self-explanatory
+- Comments allowed only in header files for function documentation
+- Use **meaningful variable names** instead of comments
+- Example: `bytes_read` instead of `n` with comment "bytes read"
+
+### **Return Values:**
+- Functions should return meaningful values
+- Use `NULL` for pointer failures, `-1` for integer failures, `0` for success
+- Always handle return values from system calls
+- Check return values from `read()`, `malloc()`, etc.
+
+### **Error Handling:**
+- Must check for errors (NULL pointers, invalid input, etc.)
+- Check return values from all system calls
+- Proper error handling and cleanup
+- **Free memory** properly to avoid leaks
+- Return appropriate error values
+
+## 🎯 Common Exam Problem Patterns:
+
+### get_next_line Pattern:
+- **Static storage** for maintaining state between calls
+- **Buffer reading** in chunks (BUFFER_SIZE)
+- **Newline detection** and line extraction
+- **EOF handling** - return final line, then NULL
+- **Memory management** - free properly, avoid leaks
+
+### ft_printf Pattern:
+- **Variadic arguments** handling (va_list, va_start, va_arg, va_end)
+- **Format string parsing** - identify specifiers (%d, %s, etc.)
+- **Type conversion** - convert numbers to strings
+- **Output buffering** - accumulate output before writing
+- **Edge cases** - NULL strings, negative numbers, zero padding
+
+### filter Pattern:
+- **String searching** - find pattern in string
+- **String manipulation** - remove/copy characters
+- **Memory allocation** - allocate result buffer
+- **Pattern matching** - compare substrings
+- **Input reading** - read entire input before processing
+
+### File I/O Pattern:
+- **Reading in chunks** - use BUFFER_SIZE
+- **Accumulating data** - realloc as needed
+- **EOF detection** - read() returns 0
+- **Error handling** - read() returns -1
+- **Memory cleanup** - free on errors
+
+## 🐛 Common Mistakes to Avoid:
+
+1. **Forgetting to free memory** - causes memory leaks
+2. **Not checking NULL returns** - crashes on malloc failure
+3. **Not handling EOF correctly** - missing final line or data
+4. **Buffer overflow** - writing beyond allocated memory
+5. **Not null-terminating strings** - undefined behavior
+6. **Incorrect static variable usage** - wrong state persistence
+7. **Not checking read() return value** - missing EOF or errors
+8. **Memory leaks in error paths** - forgetting to free on errors
+9. **Not handling empty input** - crashes on NULL or empty strings
+10. **Incorrect buffer management** - losing data between reads
+
+## 📖 Quick Reference:
+
+### File I/O:
+- `read(fd, buf, size)` - Returns bytes read, 0 on EOF, -1 on error
+- `write(fd, buf, size)` - Returns bytes written, -1 on error
+- File descriptors: 0 (stdin), 1 (stdout), 2 (stderr)
+
+### Memory:
+- `malloc(size)` - Returns pointer or NULL
+- `free(ptr)` - Deallocates memory
+- Always check NULL, always free
+
+### String Functions (if allowed):
+- `strlen(s)` - Length without null terminator
+- `strncmp(s1, s2, n)` - Compare n characters
+- `strchr(s, c)` - Find character, returns pointer or NULL
+- `strdup(s)` - Duplicate string, allocates memory
+
+### Static Variables:
+- Persist between function calls
+- Initialized once (to NULL or 0)
+- Useful for maintaining state (get_next_line stash)
+
+### Common Patterns:
+- **Read loop**: `while ((bytes = read(...)) > 0)`
+- **String copy**: Allocate, copy character by character, null-terminate
+- **Pattern search**: Compare substrings with strncmp
+- **Memory reallocation**: Save old pointer, realloc, check NULL, update pointer
+
+## ⚠️ Important Reminders:
+
+- **NO global variables** - use static variables in functions if needed
+- **Test frequently** - after each small change
+- **Use valgrind** - check for memory leaks regularly
+- **Handle edge cases** - empty input, NULL pointers, EOF
+- **Understand before copying** - don't just copy code, understand it
+- **Practice patterns** - recognize common exam problem structures
+- **Time management** - work efficiently, but correctly
+- **Ask questions** - if something is unclear, ask!
+
+Remember: The goal is **learning and exam preparation**, not just completing problems! Take your time to understand each concept deeply, but also practice working efficiently under exam conditions.

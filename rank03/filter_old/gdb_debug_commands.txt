@@ -1,0 +1,24 @@
+# In gdb, use these commands to debug:
+
+# Set a breakpoint at the realloc line
+break 97
+
+# Run with a test pattern
+run "test"
+
+# When you hit the breakpoint, check values:
+# print res
+# print buffer
+# print total_read
+# print bytes
+
+# Step one line (execute the realloc)
+next
+
+# Now check what buffer actually is:
+# print buffer
+# print (void*)buffer
+# x/1xw &buffer  # Show the memory address stored in buffer
+
+# Check if it's NULL:
+# print buffer == NULL

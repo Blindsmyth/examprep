@@ -1,0 +1,64 @@
+# GDB Commands for get_next_line Debugging
+
+## Setup
+gdb ./test
+(gdb) set args test.txt
+
+## Set Breakpoints
+(gdb) break get_next_line          # Break at function entry
+(gdb) break 187                     # Break at while loop
+(gdb) break 197                     # Break after read()
+(gdb) break 218                     # Break after joining stash
+(gdb) break 236                     # Break at extract_line
+
+## Display String Variables (use print with format)
+(gdb) display (char*)stash         # Show stash as string
+(gdb) display (char*)buffer        # Show buffer as string
+(gdb) display (char*)temp          # Show temp as string
+(gdb) display (char*)line          # Show line as string
+
+## Or use print with /s format
+(gdb) print (char*)stash            # Print stash as string
+(gdb) print (char*)buffer           # Print buffer as string
+(gdb) print (char*)temp             # Print temp as string
+
+## Display Other Variables
+(gdb) display bytes_read            # Show bytes read
+(gdb) display fd                    # Show file descriptor
+
+## Useful Commands During Debugging
+(gdb) print stash                   # Print stash pointer address
+(gdb) print *stash                  # Print first character
+(gdb) print stash[0]                # Print first character
+(gdb) print stash[0]@10             # Print first 10 characters
+(gdb) x/s stash                     # Examine stash as string
+(gdb) x/s buffer                    # Examine buffer as string
+
+## Step Through Code
+(gdb) next                          # Next line (don't step into functions)
+(gdb) step                          # Step into functions
+(gdb) continue                      # Continue execution
+(gdb) finish                        # Finish current function
+
+## Check String Length
+(gdb) print strlen(stash)           # If strlen available
+(gdb) print (int)ft_strlen(stash)   # Call your helper function
+
+## Example Session
+(gdb) break get_next_line
+(gdb) run
+(gdb) display (char*)stash
+(gdb) display (char*)buffer
+(gdb) display bytes_read
+(gdb) next                          # Step through
+(gdb) print (char*)stash            # Check stash contents
+(gdb) x/s stash                     # Alternative way to see string
+
+## Watch for Changes
+(gdb) watch stash                   # Break when stash changes
+(gdb) watch buffer                  # Break when buffer changes
+
+## Memory Inspection
+(gdb) x/20c stash                   # Show 20 characters from stash
+(gdb) x/20x stash                   # Show 20 bytes in hex from stash
+(gdb) x/s stash                     # Show stash as null-terminated string

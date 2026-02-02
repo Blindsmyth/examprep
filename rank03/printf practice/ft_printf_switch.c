@@ -35,23 +35,12 @@ Warning: Your function must not have any leaks, this will be checked during moul
 #include <stdarg.h>
 #include <stdlib.h>
 
-int	ft_strlen (char *s)
-{
-	int i = 0;
-	
-	while(s[i])
-	{
-	i++;
-	}
-	return (i);
-}
-
-int	ft_putchar (char c)
+int	ft_putchar(char c)
 {
 	return (write(1, &c, 1));
 }
 
-int	ft_putstr (char *s)
+int	ft_putstr(char *s)
 {
 	int i = 0;
 
@@ -59,17 +48,17 @@ int	ft_putstr (char *s)
 		s = "(null)";
 	while (s[i])
 	{
-		write (1, &s[i],1);
+		write(1, &s[i], 1);
 		i++;
 	}
 	return (i);
 }
 
-int	ft_putnbr (int	n)
+int	ft_putnbr(int n)
 {
 	unsigned int	nbr;
-	int	count = 0;
-	int	digit;
+	int		count = 0;
+	int		digit;
 
 	if (n < 0)
 	{
@@ -91,11 +80,11 @@ int	ft_putnbr (int	n)
 	return (count);
 }
 
-int	ft_puthex (unsigned int nbr)
+int	ft_puthex(unsigned int nbr)
 {
-	int count = 0;
-	char *hex = "0123456789abcdef";
-	int digit;
+	int	count = 0;
+	char	*hex = "0123456789abcdef";
+	int	digit;
 
 	if (nbr >= 16)
 	{
@@ -107,38 +96,53 @@ int	ft_puthex (unsigned int nbr)
 	return (count);
 }
 
-
-
-int	ft_printf (const char *format, ...)
+int	ft_printf(const char *format, ...)	/* '...' is C syntax for a variadic function */
 {
-	va_list	args;
-	int	i = 0;
+	va_list	ap;
+	int	d;
+	unsigned int	x;
+	char	*s;
 	int	count = 0;
 
-	va_start(args, format);
-
-	while (format[i])
+	va_start(ap, format);
+	while (*format)
 	{
-		if (format[i] == '%' && format[i+1])
+		if (*format == '%' && *(format + 1))
 		{
-			i++;
-			if (format[i] == 's')
-				count += ft_putstr(va_arg(args, char *));		
-			else if (format[i] == 'd')
-				count += ft_putnbr(va_arg(args, int));
-			else if (format[i] == 'x')
-				count += ft_puthex(va_arg(args, unsigned int));
-			else
+			format++;
+			switch (*format++)
 			{
+			case 's':			/* string */
+				s = va_arg(ap, char *);
+				count += ft_putstr(s);
+				break;
+			case 'd':			/* int */
+				d = va_arg(ap, int);
+				count += ft_putnbr(d);
+				break;
+			case 'x':			/* hexadecimal */
+				x = va_arg(ap, unsigned int);
+				count += ft_puthex(x);
+				break;
+			default:
 				/* If not a recognized conversion, print the % and character */
 				count += ft_putchar('%');
-				count += ft_putchar(format[i]);
+				count += ft_putchar(*(format - 1));
+				break;
 			}
 		}
 		else
-			count += ft_putchar(format[i]);
-		i++;
-	}	
-	va_end(args);
+		{
+			count += ft_putchar(*format++);
+		}
+	}
+	va_end(ap);
 	return (count);
 }
+
+int	main(void)
+{
+	ft_printf("Hello %s, %d, %x\n", "world", 42, 42);
+	return (0);
+}
+

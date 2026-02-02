@@ -1,0 +1,19 @@
+{
+	"folders": [
+		{
+			"path": "../../Projects/ft_printf"
+		},
+		{
+			"path": "."
+		},
+		{
+			"path": "../../Projects/philosophers"
+		}
+	],
+	"settings": {
+		"makefile.configureOnOpen": false,
+		"workbench.sideBar.location": "right",
+		"workbench.activityBar.orientation": "vertical",
+		"workbench.panel.defaultLocation": "bottom"
+	}
+}
