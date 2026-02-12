@@ -104,6 +104,7 @@ int	main(int argc, char **argv)
 		total_read += bytes_current;
 	}
 	memmove(result + bytes_current, buffer, BUFFER_SIZE);
+	result[total_read] = '\0';
 
 	ft_filter(result, total_read, argv[1], strlen(argv[1]));
 	return 0;
