@@ -38,37 +38,46 @@ char *ft_strchr(char *s, int c)
 {
 	int i = 0;
 
-	while (s[i] != c)
-		i++;
+	while (s[i])
+	{
 		if(s[i] == c)
-			return s++;
-		else 
-			return NULL;
+			return s + i;
+		i++;
+	}
+	return NULL;
 }
 
 void	*ft_memcpy(void *dest, const void *src, size_t n)
 {
-	while (--n > 0)
-		((char *)dest)[n - 1] = ((char *)src)[n - 1];
+	while (n-- > 0)
+		((char *)dest)[n] = ((char *)src)[n];
+
+	
 	return dest;
 }
 
+
 size_t	ft_strlen(char *s)
 {
-	size_t ret = 0;
-		while (*s)
+	size_t i = 0;
+
+	if (!s)
+		return (0);
+	
+	while (s[i])
 		{
-			s++;
-			ret++;
+			i++;
 		}
-	return ret;
+	return i;
 }
 
 int	str_append(char **s1, char *s2, size_t size2)
 {
 	size_t size1 = ft_strlen(*s1);
 	char *tmp = malloc(size2 + size1 + 1);
-	tmp [size1 + size2] = 0;
+	tmp [size1 + size2] = '\0';
+	ft_memcpy(tmp, *s1, size1);
+	ft_memcpy(tmp + size1, s2, size2);
 	free (*s1);
 	*s1 = tmp;
 	return 1;
@@ -78,7 +87,7 @@ int	str_append_str(char **s1, char *s2)
 {
 	return (str_append(s1, s2, ft_strlen(s2)));
 }
-
+/*
 void *ft_memmove(void *dest, const void *src, size_t n)
 {
 	if (dest > src)
@@ -96,22 +105,65 @@ void *ft_memmove(void *dest, const void *src, size_t n)
 	}
 	return dest;
 }
-
+*/
 char	*get_next_line(int fd)
 {
-	static char b[BUFFER_SIZE + 1] = "";
-	char *ret = NULL;
+	/* Static read buffer: persists between calls, holds leftover from last line */
+	static char buffer[BUFFER_SIZE + 1] = "";
+	/* Stash: accumulated string for current line (grows with each read until we see \n) */
+	char	*stash = NULL;
+	/* Pointer to \n in stash, or NULL; loop runs while we haven't found one */
+	char	*newline = NULL;
+	/* The line we will return (malloc'd, or stash on EOF) */
+	char	*line;
+	size_t	line_len;
+	size_t	rest_len;
+	ssize_t	bytes_read;
 
-	char *tmp = ft_strchr(b, '\n');
-
-	while (!tmp)
+	/* Read until we have a newline in stash (then newline != NULL) or hit EOF */
+	while (!newline)
 	{
-		if (!str_append_str(&ret, b))
-			return NULL;
-		int read_ret = read(fd, b, BUFFER_SIZE);
-
-		if (read_ret == -1)
-			return NULL;
-		b[read_ret] = 0;
+		bytes_read = read(fd, buffer, BUFFER_SIZE);
+		if (bytes_read == -1)	/* read error */
+		{
+			free(stash);
+			return (NULL);
+		}
+		buffer[bytes_read] = '\0';	/* null-terminate so buffer is a string */
+		if (bytes_read == 0)		/* EOF: no more data, exit loop */
+			break ;
+		if (!str_append_str(&stash, buffer))	/* append this chunk to stash */
+			return (NULL);
+		newline = ft_strchr(stash, '\n');	/* if \n in stash, loop exits */
 	}
+	/* No data to return (empty file or nothing left) */
+	if (!stash || !stash[0])
+	{
+		free(stash);
+		return (NULL);
+	}
+	newline = ft_strchr(stash, '\n');
+	
+	if (newline)
+	{
+		/* We found a full line: from start of stash up to and including \n */
+		line_len = newline - stash + 1;
+		line = malloc(line_len + 1);
+		if (!line)
+		{
+			free(stash);
+			return (NULL);
+		}
+		ft_memcpy(line, stash, line_len);
+		line[line_len] = '\0';
+		/* Rest = everything after the line; save it in buffer for next call */
+		rest_len = ft_strlen(stash) - line_len;
+		ft_memcpy(buffer, stash + line_len, rest_len + 1);
+		free(stash);
+		return (line);
+	}
+	/* EOF with no \n: return the last "line" (stash), clear buffer for next call */
+	line = stash;
+	buffer[0] = '\0';
+	return (line);
 }
