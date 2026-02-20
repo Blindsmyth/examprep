@@ -68,9 +68,11 @@ size_t	ft_strlen(char *s)
 
 int	str_append(char **s1, char *s2, size_t size2)
 {
-	size_t size1 = ft_strlen(*s1)
+	size_t size1 = ft_strlen(*s1);
 	char *tmp = malloc(size2 + size1 + 1);
-	tmp [size1 + size2] = 0;
+	tmp [size1 + size2] = '\0';
+	ft_memcpy(tmp, *s1, size1);
+	ft_memcpy(tmp + size1, s2, size2);
 	free (*s1);
 	*s1 = tmp;
 	return 1;
