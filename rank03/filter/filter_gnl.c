@@ -44,81 +44,81 @@ echo 'ababcabababc' | ./filter abab | -e
 # define BUFFER_SIZE 32
 #endif
 
-void	ft_filter (char *s, size_t slen, char *pattern, size_t patternlen)
+static char	*str_append(char *stash, char *buf, size_t buf_len, size_t *total_len)
 {
-	char	*pattern_start;
-	char *pattern_end;
-	char *s_end = s + slen;
+	size_t	old_len;
+	char	*tmp;
 
-	pattern_start = memmem(s, slen, pattern, patternlen);
-	if (!pattern_start)
+	old_len = *total_len;
+	tmp = malloc(old_len + buf_len + 1);
+	if (!tmp)
 	{
-		write(1, s, slen);
-		return ;
+		free(stash);
+		return (NULL);
 	}
-	pattern_end = pattern_start + patternlen;
-	while (*s)
+	if (stash)
+		memcpy(tmp, stash, old_len);
+	memcpy(tmp + old_len, buf, buf_len);
+	tmp[old_len + buf_len] = '\0';
+	free(stash);
+	*total_len += buf_len;
+	return (tmp);
+}
+
+static void	ft_filter(char *s, size_t slen, char *pattern, size_t patternlen)
+{
+	char	*end;
+	char	*found;
+	size_t	i;
+
+	end = s + slen;
+	while (s < end)
 	{
-		if (s < pattern_start)
+		found = memmem(s, end - s, pattern, patternlen);
+		if (!found)
 		{
-			write(1, s, 1);
-			s++;
+			write(1, s, end - s);
+			return ;
 		}
-		else if (s < pattern_end)
-		{
-			write(1,"*",1);
-			s++;
-			pattern_start++;
-		}
-		else if (s == pattern_end)
-		{
-			pattern_start = memmem(s, s_end - s, pattern, patternlen);
-			if (!pattern_start)
-			{
-				write(1, s, s_end - s);
-				return ;
-			}
-			pattern_end = pattern_start + patternlen;
-			s++;
-		}
+		if (found > s)
+			write(1, s, found - s);
+		i = 0;
+		while (i++ < patternlen)
+			write(1, "*", 1);
+		s = found + patternlen;
 	}
 }
 
 int	main(int argc, char **argv)
 {
-	char buffer[BUFFER_SIZE];
-	char *temp = NULL;
-	char *result = NULL;
-	int	total_read = 0;
-	ssize_t bytes_current;
+	static char	buffer[BUFFER_SIZE + 1];
+	char		*stash;
+	size_t		total_len;
+	ssize_t		bytes_read;
 
 	if (argc != 2 || argv[1][0] == '\0')
-		return 1;
-
-	while ((bytes_current = read(0, buffer, BUFFER_SIZE)) > 0)
+		return (1);
+	stash = NULL;
+	total_len = 0;
+	while ((bytes_read = read(0, buffer, BUFFER_SIZE)) > 0)
 	{
-		temp = realloc(result, total_read + bytes_current + 1);
-		if (!temp)
+		buffer[bytes_read] = '\0';
+		stash = str_append(stash, buffer, bytes_read, &total_len);
+		if (!stash)
 		{
 			perror("Error");
-			free(result);
-			return 1;
+			return (1);
 		}
-		result = temp;
-		memmove(result + total_read, buffer, bytes_current);
-		total_read += bytes_current;
 	}
-	if (bytes_current == -1)
+	if (bytes_read == -1)
 	{
 		perror("Error");
-		free(result);
-		return 1;
+		free(stash);
+		return (1);
 	}
-	if (result)
-	{
-		result[total_read] = '\0';
-		ft_filter(result, total_read, argv[1], strlen(argv[1]));
-	}
-	free(result);
-	return 0;
+	if (!stash)
+		return (0);
+	ft_filter(stash, total_len, argv[1], strlen(argv[1]));
+	free(stash);
+	return (0);
 }
