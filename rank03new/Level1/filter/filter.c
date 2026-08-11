@@ -16,7 +16,7 @@ char	*read_all(size_t *out_size)
 	buffer = malloc(capacity + 1);
 	if (!buffer)
 	{
-		fprintf(stderr, "Error: malloc failed\n");
+		fprintf(stderr, "Error: malloc failed\n");so
 		return (NULL);
 	}
 	while ((nread = read(0, buffer + total, BUF_SIZE)) > 0)

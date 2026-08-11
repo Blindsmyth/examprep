@@ -23,22 +23,16 @@ char	*ft_strchr(char *s, int c)
 		return (NULL);
 }
 
-/* void	*ft_memcpy(void *dest, const void *src, size_t n)
+void	*ft_memcpy(void *dest, const void *src, size_t n)
 {
-	size_t i = 0;
+	size_t	i = 0;
+
 	while (i < n)
 	{
 		((char *)dest)[i] = ((char *)src)[i];
 		i++;
 	}
 	return (dest);
-}
-*/
-void *ft_memcpy(void *dest, const void *src, size_t n)
-{
-  while(n-- > 0)
-    ((char *)dest)[n] = ((char *)src)[n];
-  return dest;
 }
 
 size_t	ft_strlen(char *s)
