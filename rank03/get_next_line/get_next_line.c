@@ -75,14 +75,21 @@ size_t	ft_strlen(char *s)
 
 int	str_append(char **s1, char *s2, size_t size2)
 {
-	size_t size1 = ft_strlen(*s1);
-	char *tmp = malloc(size2 + size1 + 1);
-	tmp [size1 + size2] = '\0';
-	ft_memcpy(tmp, *s1, size1);
-	ft_memcpy(tmp + size1, s2, size2);
-	free (*s1);
+	size_t	size1;
+	char	*tmp;
+
+	size1 = ft_strlen(*s1);
+	tmp = malloc(size1 + size2 + 1);
+	if (!tmp)
+		return (0);
+	if (*s1)
+		ft_memcpy(tmp, *s1, size1);
+	if (size2 > 0 && s2)
+		ft_memcpy(tmp + size1, s2, size2);
+	tmp[size1 + size2] = '\0';
+	free(*s1);
 	*s1 = tmp;
-	return 1;
+	return (1);
 }
 
 int	str_append_str(char **s1, char *s2)
@@ -122,6 +129,15 @@ char	*get_next_line(int fd)
 	size_t	rest_len;
 	ssize_t	bytes_read;
 
+	if (fd < 0 || BUFFER_SIZE < 1)
+		return (NULL);
+	/* Use leftover from previous call before read() overwrites static buffer */
+	if (buffer[0])
+	{
+		if (!str_append_str(&stash, buffer))
+			return (NULL);
+		newline = ft_strchr(stash, '\n');
+	}
 	/* Read until we have a newline in stash (then newline != NULL) or hit EOF */
 	while (!newline)
 	{
@@ -129,13 +145,17 @@ char	*get_next_line(int fd)
 		if (bytes_read == -1)	/* read error */
 		{
 			free(stash);
+			buffer[0] = '\0';
 			return (NULL);
 		}
 		buffer[bytes_read] = '\0';	/* null-terminate so buffer is a string */
 		if (bytes_read == 0)		/* EOF: no more data, exit loop */
 			break ;
 		if (!str_append_str(&stash, buffer))	/* append this chunk to stash */
+		{
+			free(stash);
 			return (NULL);
+		}
 		newline = ft_strchr(stash, '\n');	/* if \n in stash, loop exits */
 	}
 	/* No data to return (empty file or nothing left) */

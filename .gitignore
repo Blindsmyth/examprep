@@ -1,0 +1,16 @@
+.DS_Store
+a.out
+*.o
+*.dSYM/
+
+# compiled exam binaries (no extension)
+/filter_simple
+/test_gnl
+/test_dbg
+/test_dbg42
+/powerset
+/powerset_g
+/powerset_try
+/perm
+/nqueens
+/t

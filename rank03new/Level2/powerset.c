@@ -25,7 +25,7 @@ void	print_set(int *set, int size)
 	}
 }
 
-void powerset(int *set, int size, char **argv, int start, int sum)
+void powerset(int *set, int size, int start, int sum, char **argv)
 {
 	int i = start;
 
@@ -37,7 +37,7 @@ void powerset(int *set, int size, char **argv, int start, int sum)
 	while (argv[i])
 	{
 		set[size] = atoi(argv[i]);
-		powerset(set, size + 1, argv, i + 1, sum);
+		powerset(set, size + 1, i + 1, sum, argv);
 		i++;
 	}
 }
@@ -50,6 +50,6 @@ int main(int argc, char **argv)
 		return (1);
 	int set[argc - 2];
 	sum = atoi(argv[1]);
-	powerset(set, 0, argv, 2, sum);
+	powerset(set, 0, 2, sum, argv);
 	return (0);
 }
